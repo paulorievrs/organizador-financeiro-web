@@ -4,13 +4,10 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Button from "../../components/form/button/Button";
 import Input from "../../components/form/input/Input";
-import AppLogo from "../../components/images/AppLogo";
 import Deskguy from "../../components/images/Deskguy";
-import DiscordLogo from "../../components/images/DiscordLogo";
 import Loading from "../../components/loading/Loading";
+import Header from "../../components/pages/auth/header/Header";
 import LinkText from "../../components/texts/LinkText";
-import TextWithLines from "../../components/texts/TextWithLines";
-import TitleText from "../../components/texts/TitleText";
 import { useAuth } from "../../contexts/AuthContext";
 
 const schema = z.object({
@@ -50,21 +47,11 @@ const LoginPage = () => {
 
       <div className="w-screen flex justify-center">
         <div className="w-full flex flex-row h-screen">
-          <div className="bg-white max-w-md w-full flex flex-col justify-center px-12 md:mt-0 mt-28">
-            <div className="flex flex-col justify-center items-center pb-9">
-              <AppLogo />
-              <TitleText className="mt-10 mb-10">Login</TitleText>
-              <Button
-                label="Discord"
-                icon={<DiscordLogo width="26px" height="26px" />}
-                color="bg-gray-light"
-                textColor="text-dark"
-                onClick={() =>
-                  setErrorText("Funcionalidade não disponivel ainda.")
-                }
-              />
-            </div>
-            <TextWithLines>ou logue com seu e-mail</TextWithLines>
+          <div className="bg-white max-w-md w-full flex flex-col justify-center px-12 mt-28 md:mt-0">
+            <Header
+              title="Login"
+              onClickDiscord={() => setErrorText("Funcionalidade indisponivel")}
+            />
             <form
               onSubmit={handleSubmit(({ email, password }) =>
                 sendLoginData(email, password)
@@ -98,14 +85,18 @@ const LoginPage = () => {
                 </div>
               </div>
               <div className="flex flex-row items-end justify-end">
-                <LinkText label="Esqueceu sua senha?" />
+                <LinkText to={""} label="Esqueceu sua senha?" />
               </div>
               <Button label="Logar" />
 
               <div className="flex flex-row items-center justify-center pt-7">
                 <span>
                   Não tem uma conta?{" "}
-                  <LinkText label="Nova conta" size="text-base" />
+                  <LinkText
+                    to="/cadastro"
+                    label="Nova conta"
+                    size="text-base"
+                  />
                 </span>
               </div>
             </form>

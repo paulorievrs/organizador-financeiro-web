@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { BrowserRouter as Router } from "react-router-dom";
 import LinkText from "./LinkText";
 import TextWithLines from "./TextWithLines";
 import TitleText from "./TitleText";
@@ -6,7 +7,11 @@ import TitleText from "./TitleText";
 test("link text receiving correct properties", () => {
   const linkText = "link text";
 
-  render(<LinkText label={linkText} />);
+  render(
+    <Router>
+      <LinkText to={"/"} label={linkText} />
+    </Router>
+  );
 
   const linkTextElement = screen.getByText(linkText);
   expect(linkTextElement).toBeInTheDocument();

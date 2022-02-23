@@ -16,7 +16,7 @@ const Modal = ({ isOpen, children, onClose, headerText = "" }: ModalProps) => {
       <div className="overflow-y-hidden w-full max-w-lg p-5 mt-5 mb-5 relative mx-auto my-auto rounded-xl shadow-lg bg-white h-fit">
         <div className="flex flex-row justify-between items-center pb-4">
           <TitleText>{headerText}</TitleText>
-          <XIcon onClick={onClose} />
+          {onClose && <XIcon onClick={onClose} />}
         </div>
         <div className="overflow-y-scroll border border-gray-light p-5 pb-8">
           <p>{children}</p>

@@ -8,9 +8,15 @@ type AuthContextProps = {
 };
 
 export type LoginProps = {
-  name?: string;
   email: string;
   password: string;
+};
+
+export type RegisterProps = {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
 };
 
 type AuthContextType = {
@@ -19,7 +25,7 @@ type AuthContextType = {
   signed: boolean;
   loading: boolean;
   Login: (data: LoginProps) => any;
-  Register: (data: LoginProps) => void;
+  Register: (data: RegisterProps) => any;
   Logout: () => void;
   verifyAuth: () => void;
 };
@@ -30,7 +36,7 @@ const AuthContext = createContext<AuthContextType>({
   signed: false,
   loading: false,
   Login: () => ({ status: 0 }),
-  Register: () => {},
+  Register: () => ({ status: 0 }),
   Logout: () => {},
   verifyAuth: () => {}
 });
@@ -98,26 +104,30 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
     }
   };
 
-  const Register = async ({ name, email, password }: LoginProps) => {
+  const Register = async ({
+    name,
+    email,
+    password,
+    passwordConfirm
+  }: RegisterProps) => {
     setLoading(true);
     localStorage.clear();
 
     try {
-      await api.post("/register", {
+      const response = await api.post("/auth/register", {
         name,
         email,
-        password
+        password,
+        passwordConfirm
       });
 
       setLoading(false);
 
-      return true;
-    } catch (error) {
+      return response;
+    } catch (error: any) {
       setSigned(false);
       setLoading(false);
-      return false;
-    } finally {
-      setLoading(false);
+      return error.response;
     }
   };
 
