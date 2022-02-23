@@ -1,10 +1,13 @@
-import Routes from './routes/Routes';
+import { AuthProvider } from "./contexts/AuthContext";
+import Routes from "./routes/Routes";
 
 const App = function () {
   return (
-    <div className="font-nunito">
-      <Routes />
-    </div>
+    <AuthProvider>
+      <div className="font-nunito">
+        <Routes />
+      </div>
+    </AuthProvider>
   );
 };
 

@@ -1,13 +1,11 @@
-import {
-  BrowserRouter as Router, Routes
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const PrivateRoutes = () => {
   return (
     <Router>
-        <Routes>
-            {/* <Route path="*" element={<Login />} /> */}
-        </Routes>
+      <Routes>
+        <Route path="*" element={<h1>Logado</h1>} />
+      </Routes>
     </Router>
   );
 };

@@ -4,6 +4,7 @@ type ButtonProps = {
   color?: string;
   icon?: React.ReactNode;
   textColor?: string;
+  onClick?: () => void;
 };
 
 const Button = ({
@@ -11,12 +12,14 @@ const Button = ({
   type = "submit",
   color = "bg-primary",
   icon,
-  textColor = "text-white"
+  textColor = "text-white",
+  onClick = () => {}
 }: ButtonProps) => {
   return (
     <button
-      className={`${color} ${textColor} p-4 w-full rounded-lg font-semibold flex flex-row items-center justify-center gap-3`}
+      className={`${color} ${textColor} p-4 w-full rounded-lg font-semibold flex flex-row items-center justify-center gap-3 duration-200 hover:opacity-80`}
       type={type}
+      onClick={onClick}
     >
       <span>{label}</span>
       {icon}

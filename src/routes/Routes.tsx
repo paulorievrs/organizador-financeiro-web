@@ -1,15 +1,11 @@
-import PrivateRoutes from './PrivateRoutes';
-import PublicRoutes from './PublicRoutes';
-
+import { useAuth } from "../contexts/AuthContext";
+import PrivateRoutes from "./PrivateRoutes";
+import PublicRoutes from "./PublicRoutes";
 
 const Routes = () => {
+  const { signed } = useAuth();
 
-  const signed = false;
-
-  return (
-    signed ? <PrivateRoutes /> : <PublicRoutes />
-  );
-  
+  return signed ? <PrivateRoutes /> : <PublicRoutes />;
 };
 
 export default Routes;

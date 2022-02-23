@@ -16,6 +16,9 @@ module.exports = {
           light: "#FFEDED"
         },
         lightRed: "#F7F7F8"
+      },
+      spacing: {
+        "10px": "10px"
       }
     }
   },
