@@ -1,4 +1,7 @@
-type InputProps = {
+import { useState } from "react";
+import HideEyeClosed from "../../images/HideEyeClosed";
+
+export type InputProps = {
   name: string;
   label: string;
   type: "text" | "password" | "date" | "number" | "month" | "email";
@@ -28,6 +31,8 @@ const Input = function ({
     inputClass = `${inputClass} bg-gray-light`;
   }
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="form-group w-full">
       <label
@@ -36,15 +41,26 @@ const Input = function ({
       >
         {label}
       </label>
-      <input
-        id={name}
-        className={inputClass}
-        type={type}
-        placeholder={value || label}
-        disabled={disabled}
-        {...register(name, {})}
-        {...props}
-      />
+      <div className="relative">
+        <input
+          id={name}
+          className={inputClass}
+          type={showPassword ? "text" : type}
+          placeholder={value || label}
+          disabled={disabled}
+          {...register(name, {})}
+          {...props}
+        />
+        {type === "password" && (
+          <span
+            className="font-extrabold absolute ml-auto right-0 mt-5 mr-3 text-center cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <HideEyeClosed />
+          </span>
+        )}
+      </div>
+
       <p className="text-red-500 text-xs italic">{error}</p>
     </div>
   );
