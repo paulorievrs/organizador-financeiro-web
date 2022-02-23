@@ -1,6 +1,6 @@
 type LinkTextProps = {
-  size?: string;
-  color?: string;
+  size?: "text-sm" | "text-base" | "text-lg" | "text-xl" | "text-2xl";
+  color?: "text-primary" | "text-gray-light" | "text-white" | "text-black";
   label?: string;
 };
 

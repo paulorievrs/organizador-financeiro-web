@@ -1,7 +1,7 @@
 type InputProps = {
   name: string;
   label: string;
-  type: string;
+  type: "text" | "password" | "date" | "number" | "month" | "email";
   error: string;
   register: Function;
   disabled?: boolean;

@@ -1,7 +1,7 @@
 type ButtonProps = {
   label: string;
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
-  color?: string;
+  color?: "bg-primary" | "bg-gray-light" | "bg-white";
   icon?: React.ReactNode;
   textColor?: string;
   onClick?: () => void;
