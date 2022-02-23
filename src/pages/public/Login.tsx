@@ -2,15 +2,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import Button from "../../components/form/Button";
+import Button from "../../components/form/button/Button";
 import Input from "../../components/form/input/Input";
 import AppLogo from "../../components/images/AppLogo";
 import Deskguy from "../../components/images/Deskguy";
 import DiscordLogo from "../../components/images/DiscordLogo";
-import LinkText from "../../components/LinkText";
-import Loading from "../../components/Loading";
-import TextWithLines from "../../components/TextWithLines";
-import TitleText from "../../components/TitleText";
+import Loading from "../../components/loading/Loading";
+import LinkText from "../../components/texts/LinkText";
+import TextWithLines from "../../components/texts/TextWithLines";
+import TitleText from "../../components/texts/TitleText";
 import { useAuth } from "../../contexts/AuthContext";
 
 const schema = z.object({

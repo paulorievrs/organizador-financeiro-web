@@ -1,5 +1,5 @@
-import XIcon from "./images/XIcon";
-import TitleText from "./TitleText";
+import XIcon from "../images/XIcon";
+import TitleText from "../texts/TitleText";
 
 type ModalProps = {
   isOpen: boolean;

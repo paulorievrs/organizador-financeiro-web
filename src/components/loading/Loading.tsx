@@ -1,4 +1,4 @@
-import LoadingImg from "../assets/loading.gif";
+import LoadingImg from "../../assets/loading.gif";
 
 type LoadingProps = {
   loading: boolean;
