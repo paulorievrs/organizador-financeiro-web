@@ -48,6 +48,7 @@ const Input = function ({
           type={showPassword ? "text" : type}
           placeholder={value || label}
           disabled={disabled}
+          autoComplete={name}
           {...register(name, {})}
           {...props}
         />
