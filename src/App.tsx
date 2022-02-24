@@ -1,13 +1,18 @@
 import { AuthProvider } from "./contexts/AuthContext";
+import { LoadingProvider } from "./contexts/LoadingContext";
+import LoadingLayout from "./layout/LoadingLayout";
 import Routes from "./routes/Routes";
 
 const App = function () {
   return (
-    <AuthProvider>
-      <div className="font-nunito h-screen">
-        <Routes />
-      </div>
-    </AuthProvider>
+    <LoadingProvider>
+      <AuthProvider>
+        <div className="font-nunito h-screen">
+          <LoadingLayout />
+          <Routes />
+        </div>
+      </AuthProvider>
+    </LoadingProvider>
   );
 };
 
