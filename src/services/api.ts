@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL
@@ -16,22 +16,5 @@ api.interceptors.request.use((request: AxiosRequestConfig) => {
 
   return request;
 });
-
-api.interceptors.response.use(
-  (response: AxiosResponse) => {
-    if (response.data && response.data.status === "Token is Expired") {
-      // TO-DO LOGOUT
-    }
-
-    return response;
-  },
-  (error: AxiosError) => {
-    if (error.request && error.request.status === 401) {
-      // TO-DO LOGOUT;
-    }
-
-    return Promise.reject(error);
-  }
-);
 
 export default api;

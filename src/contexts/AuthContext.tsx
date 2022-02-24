@@ -1,5 +1,5 @@
-import { AxiosResponse } from "axios";
-import React, { createContext, useContext, useEffect } from "react";
+import { AxiosError, AxiosResponse } from "axios";
+import React, { createContext, useCallback, useContext, useMemo } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import api from "../services/api";
 import { useLoading } from "./LoadingContext";
@@ -43,78 +43,44 @@ type RegisterResponse = {
 
 type AuthContextType = {
   token: string;
-  user: object;
+  user: User;
   signed: boolean;
   Login: (data: LoginProps) => Promise<LoginResponse>;
   Register: (data: RegisterProps) => Promise<RegisterResponse>;
   Logout: () => void;
-  verifyAuth: () => void;
 };
+
+const defaultUser = { id: 0, name: "", email: "" };
 
 const defaultLoginResponse: LoginResponse = {
   data: {
     access_token: "",
     token_type: "",
     expires_in: 0,
-    user: { id: 0, name: "", email: "" }
+    user: defaultUser
   },
   status: 0
 };
 
 const defaultRegisterResponse: RegisterResponse = {
-  data: { id: 0, name: "", email: "" },
+  data: defaultUser,
   status: 0
 };
 
 const AuthContext = createContext<AuthContextType>({
   token: "",
-  user: {},
+  user: defaultUser,
   signed: false,
   Login: () => new Promise((__, _) => defaultLoginResponse),
   Register: () => new Promise((__, _) => defaultRegisterResponse),
-  Logout: () => {},
-  verifyAuth: () => {}
+  Logout: () => {}
 });
 
 export const AuthProvider = ({ children }: AuthContextProps) => {
   const [token, setToken] = useLocalStorage("token", "");
-  const [user, setUser] = useLocalStorage("user", {});
-  const [signed, setSigned] = useLocalStorage("signed", false);
+  const [user, setUser] = useLocalStorage("user", defaultUser);
 
-  const { loading, setLoading } = useLoading();
-
-  useEffect(() => {
-    if (!token) {
-      setToken(localStorage.getItem("token"));
-    }
-  }, []);
-
-  const verifyAuth = () => {
-    setLoading(true);
-    try {
-      api.get("/auth/me").then((response: AxiosResponse) => {
-        setUser(response.data);
-        setSigned(true);
-      });
-
-      return true;
-    } catch (e) {
-      Logout();
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const tokenLocal = localStorage.getItem("token");
-    if (tokenLocal && tokenLocal !== "null") {
-      verifyAuth();
-    } else if (signed && !tokenLocal) {
-      setSigned(false);
-      Logout();
-    }
-  }, []);
+  const { setLoading } = useLoading();
 
   const Login = async ({
     email,
@@ -132,11 +98,9 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
       setUser(response.data.user);
       setToken(response.data.access_token);
 
-      setSigned(true);
       setLoading(false);
       return response;
     } catch (error: any) {
-      setSigned(false);
       setLoading(false);
       return error.response;
     }
@@ -163,30 +127,46 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
 
       return response;
     } catch (error: any) {
-      setSigned(false);
       setLoading(false);
       return error.response;
     }
   };
 
-  const Logout = async () => {
+  const Logout = useCallback(async () => {
     setLoading(true);
     await api
       .post("/auth/logout", {})
       .finally(() => {
-        localStorage.clear();
-        setSigned(false);
+        setToken("");
       })
       .finally(() => setLoading(false));
-  };
+  }, [setLoading, setToken]);
+
+  useMemo(() => {
+    api.interceptors.response.use(
+      (response: AxiosResponse) => {
+        if (response.data && response.data.status === "Token is Expired") {
+          Logout();
+        }
+
+        return response;
+      },
+      (error: AxiosError) => {
+        if (error.request && error.request.status === 401) {
+          Logout();
+        }
+
+        return Promise.reject(error);
+      }
+    );
+  }, [Logout]);
 
   const contextData: AuthContextType = {
-    signed,
+    signed: Boolean(token),
     Login,
     Logout,
     token,
     user,
-    verifyAuth,
     Register
   };
 
