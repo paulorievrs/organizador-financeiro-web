@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import * as z from "zod";
 import Button from "../../components/form/button/Button";
 import Input from "../../components/form/input/Input";
@@ -27,12 +28,13 @@ const LoginPage = () => {
 
   const [errorText, setErrorText] = useState("");
 
+  const navigate = useNavigate();
   const { Login } = useAuth();
 
   const sendLoginData = async (email: string, password: string) => {
     setErrorText("");
     const response = await Login({ email, password });
-
+    navigate("/");
     if (response?.status === 401) {
       setErrorText("E-mail e/ou senha incorretos.");
     } else if (response?.status === 500) {

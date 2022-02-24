@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import * as z from "zod";
 import Button from "../../components/form/button/Button";
 import Input, { InputProps } from "../../components/form/input/Input";
@@ -59,6 +60,8 @@ const RegisterPage = () => {
     mode: "onBlur",
     reValidateMode: "onChange"
   });
+
+  const navigate = useNavigate();
 
   type inputTypes = {
     name: string;
@@ -124,6 +127,7 @@ const RegisterPage = () => {
     const { email, password } = getValues();
 
     const response = await Login({ email, password });
+    navigate("/");
     if (response?.status !== 200 && response?.status !== 201) {
       reset();
       setShowModal(false);
