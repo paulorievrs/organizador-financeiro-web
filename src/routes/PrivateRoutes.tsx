@@ -1,11 +1,15 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Layout from "../layout/private/Layout";
+import Dashboard from "../pages/private/Dashboard";
 
 const PrivateRoutes = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="*" element={<h1>Logado</h1>} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+        </Routes>
+      </Layout>
     </Router>
   );
 };

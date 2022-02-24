@@ -1,7 +1,9 @@
-const AppLogo = () => (
+import defaultSvgPropType from "./DefaultSVGPropType";
+
+const AppLogo = ({ width = "92", height = "92" }: defaultSvgPropType) => (
   <svg
-    width="92"
-    height="92"
+    width={width}
+    height={height}
     viewBox="0 0 92 92"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
