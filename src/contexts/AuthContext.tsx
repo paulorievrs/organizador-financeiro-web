@@ -1,7 +1,8 @@
 import { AxiosResponse } from "axios";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import api from "../services/api";
+import { useLoading } from "./LoadingContext";
 
 type AuthContextProps = {
   children: React.ReactNode;
@@ -19,24 +20,58 @@ export type RegisterProps = {
   passwordConfirm: string;
 };
 
+type User = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+type LoginResponse = {
+  data: {
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+    user: User;
+  };
+  status: number;
+};
+
+type RegisterResponse = {
+  data: User;
+  status: number;
+};
+
 type AuthContextType = {
   token: string;
   user: object;
   signed: boolean;
-  loading: boolean;
-  Login: (data: LoginProps) => any;
-  Register: (data: RegisterProps) => any;
+  Login: (data: LoginProps) => Promise<LoginResponse>;
+  Register: (data: RegisterProps) => Promise<RegisterResponse>;
   Logout: () => void;
   verifyAuth: () => void;
+};
+
+const defaultLoginResponse: LoginResponse = {
+  data: {
+    access_token: "",
+    token_type: "",
+    expires_in: 0,
+    user: { id: 0, name: "", email: "" }
+  },
+  status: 0
+};
+
+const defaultRegisterResponse: RegisterResponse = {
+  data: { id: 0, name: "", email: "" },
+  status: 0
 };
 
 const AuthContext = createContext<AuthContextType>({
   token: "",
   user: {},
   signed: false,
-  loading: false,
-  Login: () => ({ status: 0 }),
-  Register: () => ({ status: 0 }),
+  Login: () => new Promise((__, _) => defaultLoginResponse),
+  Register: () => new Promise((__, _) => defaultRegisterResponse),
   Logout: () => {},
   verifyAuth: () => {}
 });
@@ -46,7 +81,7 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
   const [user, setUser] = useLocalStorage("user", {});
   const [signed, setSigned] = useLocalStorage("signed", false);
 
-  const [loading, setLoading] = useState(false);
+  const { loading, setLoading } = useLoading();
 
   useEffect(() => {
     if (!token) {
@@ -81,7 +116,10 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
     }
   }, []);
 
-  const Login = async ({ email, password }: LoginProps) => {
+  const Login = async ({
+    email,
+    password
+  }: LoginProps): Promise<LoginResponse> => {
     setLoading(true);
     localStorage.clear();
 
@@ -109,7 +147,7 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
     email,
     password,
     passwordConfirm
-  }: RegisterProps) => {
+  }: RegisterProps): Promise<RegisterResponse> => {
     setLoading(true);
     localStorage.clear();
 
@@ -149,7 +187,6 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
     token,
     user,
     verifyAuth,
-    loading,
     Register
   };
 

@@ -6,7 +6,6 @@ import Button from "../../components/form/button/Button";
 import Input, { InputProps } from "../../components/form/input/Input";
 import DeskguyRegister from "../../components/images/DeskguyRegister";
 import SuccessImage from "../../components/images/SuccessImg";
-import Loading from "../../components/loading/Loading";
 import Modal from "../../components/modal/Modal";
 import Header from "../../components/pages/auth/header/Header";
 import LinkText from "../../components/texts/LinkText";
@@ -17,7 +16,10 @@ const schema = z
   .object({
     name: z.string().nonempty({ message: "Digite seu nome completo" }),
     email: z.string().email({ message: "Digite um e-mail válido" }),
-    password: z.string().nonempty({ message: "Digite a senha" }),
+    password: z
+      .string()
+      .nonempty({ message: "Digite a senha" })
+      .min(6, { message: "Sua senha deve conter no minímo 6 caracteres" }),
     passwordConfirm: z
       .string()
       .nonempty({ message: "Digite a confirmação de senha" })
@@ -50,6 +52,7 @@ const RegisterPage = () => {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors }
   } = useForm({
     resolver: zodResolver(schema),
@@ -92,10 +95,8 @@ const RegisterPage = () => {
   ];
   const [errorText, setErrorText] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const { Login, Register, loading } = useAuth();
+  const { Login, Register } = useAuth();
 
   const sendLoginData = async (
     name: string,
@@ -105,17 +106,23 @@ const RegisterPage = () => {
   ) => {
     setErrorText("");
     const response = await Register({ name, email, password, passwordConfirm });
-    if (response?.status !== 200 && response?.status !== 201) {
+    console.log("status", response.status);
+    if (response?.status === 302) {
+      setErrorText("Esse e-mail já está cadastrado.");
+      return;
+    } else if (response?.status !== 200 && response?.status !== 201) {
       setErrorText("Ocorreu um erro ao tentar fazer registro.");
+
       return;
     }
-    setEmail(email);
-    setPassword(password);
+
     setShowModal(true);
   };
 
   const loginRegistered = async () => {
     setShowModal(false);
+    const { email, password } = getValues();
+
     const response = await Login({ email, password });
     if (response?.status !== 200 && response?.status !== 201) {
       reset();
@@ -127,7 +134,6 @@ const RegisterPage = () => {
 
   return (
     <>
-      <Loading loading={loading} />
       <Modal isOpen={showModal}>
         <div className="flex flex-col items-center justify-center gap-14">
           <SuccessImage />
@@ -155,9 +161,8 @@ const RegisterPage = () => {
                   <p className="text-red-500 text-xs italic">{errorText}</p>
                 </div>
                 {registerInputs.map((input) => (
-                  <div className="mb-6">
+                  <div className="mb-6" key={input.name}>
                     <Input
-                      key={input.name}
                       type={input.type}
                       error={errors[input.name]?.message}
                       name={input.name}

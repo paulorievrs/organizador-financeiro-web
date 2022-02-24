@@ -5,7 +5,6 @@ import * as z from "zod";
 import Button from "../../components/form/button/Button";
 import Input from "../../components/form/input/Input";
 import Deskguy from "../../components/images/Deskguy";
-import Loading from "../../components/loading/Loading";
 import Header from "../../components/pages/auth/header/Header";
 import LinkText from "../../components/texts/LinkText";
 import { useAuth } from "../../contexts/AuthContext";
@@ -28,7 +27,7 @@ const LoginPage = () => {
 
   const [errorText, setErrorText] = useState("");
 
-  const { Login, loading } = useAuth();
+  const { Login } = useAuth();
 
   const sendLoginData = async (email: string, password: string) => {
     setErrorText("");
@@ -43,8 +42,6 @@ const LoginPage = () => {
 
   return (
     <>
-      <Loading loading={loading} />
-
       <div className="w-screen flex justify-center">
         <div className="w-full flex flex-row h-screen">
           <div className="bg-white max-w-md w-full flex flex-col justify-center px-12 mt-28 md:mt-0">
