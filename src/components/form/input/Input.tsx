@@ -3,13 +3,15 @@ import HideEyeClosed from "../../images/HideEyeClosed";
 
 export type InputProps = {
   name: string;
-  label: string;
+  label?: string;
   type: "text" | "password" | "date" | "number" | "month" | "email";
-  error: string;
-  register: Function;
+  error?: string;
+  register?: Function;
   disabled?: boolean;
   value?: string;
   onChange?: Function;
+  bgColor?: string;
+  height?: string;
 };
 
 const Input = function ({
@@ -17,30 +19,34 @@ const Input = function ({
   label,
   type,
   error,
-  register,
+  register = () => {},
   disabled = false,
   value = "",
+  bgColor = "bg-gray-light",
+  height = "h-12",
   ...props
 }: InputProps) {
-  let inputClass =
-    "leading-5 h-12 rounded-lg text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none";
+  let inputClass = `leading-5 ${height} rounded-lg text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none`;
 
   if (error) {
     inputClass = `${inputClass} border border-red-300 bg-red-light`;
   } else {
-    inputClass = `${inputClass} bg-gray-light`;
+    inputClass = `${inputClass} ${bgColor}`;
   }
 
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="form-group w-full">
-      <label
-        className="block text-gray-700 font-normal text-base mb-2"
-        htmlFor={name}
-      >
-        {label}
-      </label>
+      {label && (
+        <label
+          className="block text-gray-700 font-normal text-base mb-2"
+          htmlFor={name}
+        >
+          {label}
+        </label>
+      )}
+
       <div className="relative">
         <input
           id={name}

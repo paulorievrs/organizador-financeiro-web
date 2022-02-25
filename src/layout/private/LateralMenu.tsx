@@ -44,7 +44,7 @@ const LateralMenu = () => {
 
   return (
     <div className="shadow-sm h-screen bg-white relative">
-      <div className="px-20 mt-12">
+      <div className="sm: px-6 md:px-20 mt-12">
         <div>
           <AppLogo width="50" height="50" />
         </div>
@@ -56,7 +56,11 @@ const LateralMenu = () => {
             icon={item.icon}
             label={item.label}
             route={item.route}
-            opacity={location.pathname === item.route ? "20" : "0"}
+            opacity={
+              location.pathname === item.route
+                ? "before:opacity-20"
+                : "before:opacity-0"
+            }
             color={location.pathname === item.route ? "primary" : "gray-dark"}
           />
         ))}
@@ -65,11 +69,9 @@ const LateralMenu = () => {
         className="absolute bottom-0 pb-11 left-0 right-0 cursor-pointer hover:opacity-70"
         onClick={Logout}
       >
-        <div className="flex flex-row justify-center items-center gap-5">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-5">
           <span className="font-semibold text-sm">
-            {user.name.split(" ")[0] +
-              " " +
-              user.name.split(" ")[user.name.split(" ").length - 1]}
+            {user.name.split(" ")[0]}
           </span>
           <LogoutIcon />
         </div>
