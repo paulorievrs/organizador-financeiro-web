@@ -19,6 +19,7 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors }
   } = useForm({
     resolver: zodResolver(schema),
@@ -66,9 +67,9 @@ const LoginPage = () => {
                     error={errors.email?.message}
                     name="email"
                     label="E-mail"
-                    value="Digite seu e-mail"
-                    onChange={() => setErrorText("")}
+                    placeholder="Digite seu e-mail"
                     register={register}
+                    value={getValues().email}
                   />
                 </div>
                 <div className="mb-6">
@@ -76,9 +77,8 @@ const LoginPage = () => {
                     name="password"
                     label="Senha"
                     type="password"
-                    value="Digite sua senha"
+                    placeholder="Digite sua senha"
                     error={errors.password?.message}
-                    onChange={() => setErrorText("")}
                     register={register}
                   />
                 </div>

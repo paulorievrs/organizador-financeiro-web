@@ -70,9 +70,15 @@ const LateralMenu = () => {
         onClick={Logout}
       >
         <div className="flex flex-col md:flex-row justify-center items-center gap-5">
-          <span className="font-semibold text-sm">
-            {user.name.split(" ")[0]}
-          </span>
+          <div className="flex flex-row gap-1">
+            <span className="font-semibold text-sm">
+              {user.name.split(" ")[0]}
+            </span>
+            <span className="font-semibold text-sm hidden md:block">
+              {user.name.split(" ")[user.name.split(" ").length - 1]}
+            </span>
+          </div>
+
           <LogoutIcon />
         </div>
       </div>
