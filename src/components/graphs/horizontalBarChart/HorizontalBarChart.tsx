@@ -9,9 +9,7 @@ import {
   Tooltip
 } from "chart.js";
 import { AnyObject } from "chart.js/types/basic";
-import { _DeepPartialArray } from "chart.js/types/utils";
-import ChartDataLabels, { Context } from "chartjs-plugin-datalabels";
-import { Align } from "chartjs-plugin-datalabels/types/options";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
 
 ChartJS.register(
@@ -33,34 +31,20 @@ const plugins2: Plugin<"bar", AnyObject>[] = [
       data?: any;
       controller?: any;
     }) => {
-      let ctx = chart.ctx;
-      console.log(ctx.controller);
-      ctx.font = 13;
-      ctx.fillStyle = "red";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "bottom";
-      chart.data.datasets.forEach(function (dataset: any) {
-        dataset.bars.forEach(function (bar: any) {
-          ctx.fillText(bar.value, bar.x, bar.y - 5);
-        });
-      });
+      //let ctx = chart.ctx;
+      // ctx.font = 13;
+      // ctx.fillStyle = "red";
+      // ctx.textAlign = "center";
+      // ctx.textBaseline = "bottom";
+      // chart.data.datasets.forEach(function (dataset: any) {
+      //   dataset.bars.forEach(function (bar: any) {
+      //     ctx.fillText(bar.value, bar.x, bar.y - 5);
+      //   });
+      // });
     }
   },
   ChartDataLabels
 ];
-
-const align:
-  | number
-  | "start"
-  | "end"
-  | "left"
-  | "right"
-  | "bottom"
-  | "top"
-  | "center"
-  | ((context: Context) => Align)
-  | _DeepPartialArray<Align>
-  | undefined = "left";
 
 const options = {
   indexAxis: "y" as const,
@@ -76,10 +60,7 @@ const options = {
       position: "right" as const
     },
     datalabels: {
-      display: true,
-      color: "black",
-      align: align,
-      font: { size: 15 }
+      display: false
     },
     title: {
       display: false,
@@ -108,19 +89,44 @@ const options = {
       },
       ticks: {}
     }
+  },
+  animation: {
+    duration: 1,
+    onComplete: function (chart: any) {
+      const chartInstance = chart.chart;
+      const ctx = chartInstance.ctx;
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(0, 0, 0, 1)";
+      ctx.textBaseline = "bottom";
+      data.datasets.forEach(function (dataset, i) {
+        console.log(dataset);
+        var meta = chartInstance.getDatasetMeta(i);
+        meta.data.forEach(function (bar: any, index: any) {
+          var data = dataset.data[index];
+          ctx.fillText(data, bar.x + 15, bar.y + 6);
+        });
+      });
+    }
   }
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
 export const data = {
   labels,
   datasets: [
     {
       label: "Dataset 1",
-      data: [31, 23, 15, 33, 55, 24, 70],
+      data: [20, 59, 80, 81, 56, 55, 40],
+      backgroundColor: [
+        "#FF8F6B",
+        "#5B93FF",
+        "#FF8F6B",
+        "#5B93FF",
+        "#FF8F6B",
+        "#5B93FF"
+      ],
       borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
       borderRadius: 20,
       borderWidth: 0,
       barPercentage: 0.9,
