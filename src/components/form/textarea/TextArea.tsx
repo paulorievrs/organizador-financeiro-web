@@ -1,10 +1,6 @@
-import { useState } from "react";
-import HideEyeClosed from "../../images/HideEyeClosed";
-
-export type InputProps = {
+export type TextAreaProps = {
   name: string;
   label?: string;
-  type: "text" | "password" | "date" | "number" | "month" | "email";
   error?: string;
   register?: Function;
   disabled?: boolean;
@@ -12,32 +8,26 @@ export type InputProps = {
   onChange?: Function;
   bgColor?: string;
   height?: string;
-  placeholder?: string;
 };
 
-const Input = function ({
+const TextArea = function ({
   name,
   label,
-  type,
   error,
   register = () => {},
   disabled = false,
   value = "",
   bgColor = "bg-gray-light",
   height = "h-12",
-  onChange = () => {},
-  placeholder = "",
   ...props
-}: InputProps) {
-  let inputClass = `leading-5 ${height} rounded-lg text-sm appearance-none rounded-[10px] w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none`;
+}: TextAreaProps) {
+  let inputClass = `leading-5 resize-none ${height} rounded-[10px] text-sm appearance-none rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none`;
 
   if (error) {
     inputClass = `${inputClass} border border-red-300 bg-red-light`;
   } else {
     inputClass = `${inputClass} ${bgColor}`;
   }
-
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="form-group w-full">
@@ -51,25 +41,15 @@ const Input = function ({
       )}
 
       <div className="relative">
-        <input
+        <textarea
           id={name}
           className={inputClass}
-          type={showPassword ? "text" : type}
-          placeholder={placeholder}
+          placeholder={value || label}
           disabled={disabled}
           autoComplete={name}
-          onChange={onChange}
           {...register(name, {})}
           {...props}
-        />
-        {type === "password" && (
-          <span
-            className="font-extrabold absolute ml-auto right-0 mt-5 mr-3 text-center cursor-pointer"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            <HideEyeClosed />
-          </span>
-        )}
+        ></textarea>
       </div>
 
       <p className="text-red-500 text-xs italic">{error}</p>
@@ -77,4 +57,4 @@ const Input = function ({
   );
 };
 
-export default Input;
+export default TextArea;
