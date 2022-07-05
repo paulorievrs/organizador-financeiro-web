@@ -99,7 +99,6 @@ const options = {
       ctx.fillStyle = "rgba(0, 0, 0, 1)";
       ctx.textBaseline = "bottom";
       data.datasets.forEach(function (dataset, i) {
-        console.log(dataset);
         var meta = chartInstance.getDatasetMeta(i);
         meta.data.forEach(function (bar: any, index: any) {
           var data = dataset.data[index];

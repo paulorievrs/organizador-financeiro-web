@@ -1,5 +1,6 @@
 import { useState } from "react";
 import HideEyeClosed from "../../images/HideEyeClosed";
+import { getInputClass } from "../formUtils";
 
 export type InputProps = {
   name: string;
@@ -13,6 +14,7 @@ export type InputProps = {
   bgColor?: string;
   height?: string;
   placeholder?: string;
+  options?: any[];
 };
 
 const Input = function ({
@@ -29,13 +31,7 @@ const Input = function ({
   placeholder = "",
   ...props
 }: InputProps) {
-  let inputClass = `leading-5 ${height} rounded-lg text-sm appearance-none rounded-[10px] w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none`;
-
-  if (error) {
-    inputClass = `${inputClass} border border-red-300 bg-red-light`;
-  } else {
-    inputClass = `${inputClass} ${bgColor}`;
-  }
+  const inputClass = getInputClass(height, bgColor, error);
 
   const [showPassword, setShowPassword] = useState(false);
 

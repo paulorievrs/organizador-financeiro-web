@@ -1,8 +1,7 @@
 import { useState } from "react";
 import DateRange from "../../components/dateRange/DateRange";
 import Button from "../../components/form/button/Button";
-import Input from "../../components/form/input/Input";
-import TextArea from "../../components/form/textarea/TextArea";
+import ExpenseForm from "../../components/form/expenseForm/ExpenseForm";
 import HorizontalBarChart from "../../components/graphs/horizontalBarChart/HorizontalBarChart";
 import LineGraph from "../../components/graphs/lineGraph/LineGraph";
 import PlusIcon from "../../components/images/PlusIcon";
@@ -73,8 +72,7 @@ const Dashboard = () => {
         onClose={hideExpenseModal}
         title="Adicionar Gasto"
       >
-        <TextArea name={"Teste"} height={"h-28"} label="Descrição" />
-        <Input name={"price"} type={"text"} height={"h-10"} label={"Preço"} />
+        <ExpenseForm />
       </LateralModal>
     </>
   );

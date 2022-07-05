@@ -109,7 +109,6 @@ const RegisterPage = () => {
   ) => {
     setErrorText("");
     const response = await Register({ name, email, password, passwordConfirm });
-    console.log("status", response.status);
     if (response?.status === 302) {
       setErrorText("Esse e-mail já está cadastrado.");
       return;

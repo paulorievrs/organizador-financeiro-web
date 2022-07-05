@@ -5,7 +5,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((request: AxiosRequestConfig) => {
-  const token = localStorage.getItem("token");
+  const token = JSON.parse(localStorage.getItem("token") || "");
   request.headers = {
     Authorization: `Bearer ${token}`,
     "Access-Control-Allow-Origin": "*",
