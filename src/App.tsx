@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { AuthProvider } from "./contexts/AuthContext";
+import { LoadingProvider } from "./contexts/LoadingContext";
+import LoadingLayout from "./layout/LoadingLayout";
+import Routes from "./routes/Routes";
 
-function App() {
+const App = function () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <LoadingProvider>
+      <AuthProvider>
+        <div className="font-nunito h-screen">
+          <LoadingLayout />
+          <Routes />
+        </div>
+      </AuthProvider>
+    </LoadingProvider>
   );
-}
+};
 
 export default App;
